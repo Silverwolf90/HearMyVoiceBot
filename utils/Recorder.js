@@ -37,14 +37,14 @@ class Recorder {
 	*/
 	async startRecording(user, callbackOnRecorded) {
 		this.userId = user.id;
-		
+
 		this.filePath = await generateRecordingFilePath(this.userId);
 		this.mp3FilePath = this.filePath.replace('.pcm', '.mp3');
-		
+
 		/* Starts recording a user's voice stream */
 		let audioStream = await this.receiver.createStream(user, {mode: 'pcm', end: 'manual'});
 		this.audioStream = audioStream;
-		
+
 		audioStreamPerGuild[this.guild.id] = {
 			stream: audioStream,
 			author_id: user.id,
@@ -60,7 +60,7 @@ class Recorder {
 			/* Saves recording */
 			this.saveRecording(callbackOnRecorded, false);
 		});
-		
+
 		this.isRecording = true;
 
 		/* If after 15 minutes, voice recording didn't finish */
@@ -94,22 +94,22 @@ class Recorder {
 			this.audioStream = audioStreamPerGuild[this.guild.id].stream;
 			this.userId = audioStreamPerGuild[this.guild.id].author_id;
 		}
-		
+
 		if (this.audioStream && this.userId) {
 			if (byUser.id === this.userId) {
 				/* Destroys the audioStream, to end recording. When destroy is called, also it's called the callback in startRecording, audioStream.on('close') */
 				await this.audioStream.destroy();
-				
+
 				audioStreamPerGuild[this.guild.id] = null;
-				
+
 				this.isRecording = false;
 
 				if (this.timeout) clearTimeout(this.timeout);
-				
+
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -129,16 +129,16 @@ class Recorder {
 			output: this.mp3FilePath,
 			raw: true,
 			bitrate: 192,
-			scale: 3,
+			scale: 1,
 			sfreq: 48
 		}).setFile(this.filePath);
-		
+
 		encoder
 			.encode()
 			.then(async() => {
 				/* Removes .pmc recorded file */
 				await fs.unlinkSync(this.filePath);
-				
+
 				/* Calls callback function, file path .mp3 is passed and a boolean, timeLimitReached, that means if the time limit is reached or not */
 				await callback(this.mp3FilePath, timeLimitReached);
 
