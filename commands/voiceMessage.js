@@ -67,7 +67,7 @@ client.on('message', async(message) => {
 
         /* Every 30 seconds, checks if the voice channel is empty. If it is, just remove it, because no one joined to record. */
         let interval = setInterval(async () => {
-            let actualVoiceChannel = await message.guild.channels.get(voiceChannel.id);
+            let actualVoiceChannel = await message.guild.channels.resolve(voiceChannel.id);
 
             /* If voice channel exists */
             if (actualVoiceChannel) {

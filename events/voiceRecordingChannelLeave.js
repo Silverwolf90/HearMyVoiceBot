@@ -22,7 +22,7 @@ client.on('voiceStateUpdate', async(oldState, newState) => {
         if (audioStreamPerGuild[oldState.guild.id]["author_id"] !== member.user.id) return;
 
         /* Gets voice channel created by the bot */
-        let voiceChannel = await member.guild.channels.get(voiceChannelPerGuild[oldState.guild.id]['voice_channel_id']);
+        let voiceChannel = await member.guild.channels.resolve(voiceChannelPerGuild[oldState.guild.id]['voice_channel_id']);
 
         /* Deletes voice channel and its category*/
         if (voiceChannel.parent) await voiceChannel.parent.delete();

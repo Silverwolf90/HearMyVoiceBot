@@ -36,8 +36,8 @@ client.on('voiceStateUpdate', async(oldState, newState) => {
             }
 
             /* Gets bot-created voice channel and the text channel where the user used the voice message command*/
-            let voiceChannel = await member.guild.channels.get(voiceChannelPerGuild[newState.guild.id]['voice_channel_id']);
-            let textChannel = await member.guild.channels.get(voiceChannelPerGuild[newState.guild.id]['text_channel_id']);
+            let voiceChannel = await member.guild.channels.resolve(voiceChannelPerGuild[newState.guild.id]['voice_channel_id']);
+            let textChannel = await member.guild.channels.resolve(voiceChannelPerGuild[newState.guild.id]['text_channel_id']);
 
             /* Joins the voice channel together with the user */
             voiceChannel.join()
