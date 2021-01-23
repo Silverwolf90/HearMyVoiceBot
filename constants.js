@@ -5,7 +5,10 @@ const fs = require('fs');
 const path = require('path');
 
 /* Config file */
-const config = Hjson.parse(fs.readFileSync(path.resolve(__dirname, "./config.hjson"), 'utf8'));
+// const config = Hjson.parse(fs.readFileSync(path.resolve(__dirname, "./config.hjson"), 'utf8'));
+const config = {
+	token: process.env.BOT_TOKEN,
+}
 
 /* Bot token */
 const {token} = config;
